@@ -6,7 +6,7 @@ import (
 	"reflect"
 )
 
-var debug = true
+var Debug = false
 
 type Regex struct {
 	DFATable    []*DFA
@@ -39,7 +39,7 @@ func NewRegex(source string) (*Regex, error) {
 		NFAPoint: nfaSet[0],
 	}
 	regex.DFATable = regex.nfa2dfa(nfaSet[0].Start)
-	if debug {
+	if Debug {
 		regex.printNFA()
 		regex.printDFATable()
 	}
@@ -49,9 +49,9 @@ func NewRegex(source string) (*Regex, error) {
 func (r *Regex) Match(s string) bool {
 	curDFA := r.DFATable[0]
 	for _, r := range s {
-		if nextDFA, ok := curDFA.transitions['?']; ok {
+		if nextDFA, ok := curDFA.transitions[r]; ok {
 			curDFA = nextDFA
-		} else if nextDFA, ok := curDFA.transitions[r]; ok {
+		} else if nextDFA, ok := curDFA.transitions['?']; ok {
 			curDFA = nextDFA
 		} else {
 			curDFA = nil

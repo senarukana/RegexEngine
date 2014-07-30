@@ -10,6 +10,7 @@ import (
 
 func main() {
 	rd := bufio.NewReader(os.Stdin)
+	regex.Debug = true
 	for {
 		str, err := rd.ReadString('\n')
 		if err != nil {

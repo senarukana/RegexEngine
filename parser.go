@@ -57,7 +57,7 @@ func (parser *Parser) expr() {
 
 func (parser *Parser) term() {
 	parser.factor()
-	if parser.nextToken.Type != EOF && parser.nextToken.Type != ALT {
+	if parser.nextToken.Type != EOF && parser.nextToken.Type != ALT && parser.nextToken.Type != RP {
 		parser.term()
 		parser.handlers = append(parser.handlers, NewConsHandler(NewToken(CONS, ' ')))
 	}

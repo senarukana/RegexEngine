@@ -1,7 +1,7 @@
 package regex
 
 import (
-	"fmt"
+// "fmt"
 )
 
 type Handler interface {
@@ -59,7 +59,7 @@ func NewAltHandler(tok *Token) *AltHandler {
 }
 
 func (h *CharHandler) Accept(n NFASet) NFASet {
-	fmt.Println("CHAR")
+	// fmt.Println("CHAR")
 	s0 := NewState()
 	s1 := NewState()
 	s0.Final = false
@@ -69,17 +69,17 @@ func (h *CharHandler) Accept(n NFASet) NFASet {
 }
 
 func (h *QMarkHandler) Accept(n NFASet) NFASet {
-	fmt.Println("QMARK")
+	// fmt.Println("QMARK")
 	s0 := NewState()
 	s1 := NewState()
-	s0.Final = false
 	s0.Transition[h.Val] = s1
+	s0.EpsilonSet.Insert(s1)
 	nfa := NewNFA(s0, s1)
 	return n.Push(nfa)
 }
 
 func (h *ReplHandler) Accept(n NFASet) NFASet {
-	fmt.Println("REPL")
+	// fmt.Println("REPL")
 	nfa, n := n.Pop()
 	s0 := NewState()
 	s1 := NewState()
@@ -94,7 +94,7 @@ func (h *ReplHandler) Accept(n NFASet) NFASet {
 }
 
 func (h *ConsHandler) Accept(n NFASet) NFASet {
-	fmt.Println("CONS")
+	// fmt.Println("CONS")
 	n1, n := n.Pop()
 	n0, n := n.Pop()
 	n0.End.EpsilonSet.Insert(n1.Start)

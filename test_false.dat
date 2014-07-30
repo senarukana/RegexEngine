@@ -1,0 +1,6 @@
+a ab
+a* ab
+a? acc
+(a|b) c
+(a)(b) ac
+(a|c)(b|d) ac
