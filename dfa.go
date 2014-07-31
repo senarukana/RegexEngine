@@ -28,6 +28,21 @@ func NewDFA(id int, states StateSet) *DFA {
 	return dfa
 }
 
+func (d *DFA) IsDeadState() bool {
+	if d.final {
+		return false
+	}
+	if len(d.transitions) == 0 {
+		return true
+	}
+	for _, dfa := range d.transitions {
+		if d != dfa {
+			return false
+		}
+	}
+	return true
+}
+
 func (d *DFA) PrettyPrint() {
 	fmt.Printf("--------STATE: %d , Final = %v--------\n", d.Id, d.final)
 	fmt.Printf("StateSet: { ")

@@ -153,5 +153,32 @@ func (regex *Regex) nfa2dfa(startState *State) (dfaTable []*DFA) {
 			}
 		}
 	}
+	regex.reduceDFA()
 	return dfaTable
+}
+
+func (regex *Regex) reduceDFA() {
+	var deadDFAs []*DFA
+	var pos int
+	for _, dfa := range regex.DFATable {
+		if dfa.IsDeadState() {
+			deadDFAs = append(deadDFAs, dfa)
+		}
+	}
+
+	for _, deadDfa := range deadDFAs {
+		for i, dfa := range regex.DFATable {
+			for r, transDfa := range dfa.transitions {
+				if transDfa == deadDfa {
+					delete(dfa.transitions, r)
+					break
+				}
+			}
+			if dfa == deadDfa {
+				pos = i
+			}
+		}
+		regex.DFATable = append(regex.DFATable[:pos-1], regex.DFATable[pos+1:]...)
+	}
+	return
 }
